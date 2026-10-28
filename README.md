@@ -1,2 +1,71 @@
 # self-intro
-Phase 0: 自己紹介ファイルをPRで追加してGit/GitHubの基本を練習するリポジトリ
+
+Kyoto Dev Circle の Phase 0 用リポジトリです。
+自己紹介ファイルを Pull Request で追加しながら、Git/GitHub を使った共同開発の基本を練習します。
+
+## ルール
+
+- `main` ブランチに直接 push はできません（保護されています）。
+- 作業は必ず Issue から始め、ブランチを作って Pull Request を出します。
+- マージには、もう1人のレビュー（Approve）が必要です。
+- ブランチ名は `feature/#Issue番号-内容` の形にします（例：`feature/#2-add-hayato`）。
+- コミットメッセージは `feat:`、`fix:`、`docs:` などで始めます。
+
+## やること
+
+### 1. リポジトリを自分のPCにコピーする
+
+```
+git clone https://github.com/kyoto-dev-circle/self-intro.git
+cd self-intro
+```
+
+### 2. 作業用のブランチを作る
+
+```
+git switch -c feature/#Issue番号-add-自分の名前
+```
+
+### 3. 自己紹介ファイルを作る
+
+`members/` フォルダに `自分のGitHubユーザー名.md` を作り、次の内容を書きます。
+
+```
+# 名前（ハンドルネームでOK）
+
+- 学部・学年：
+- 趣味：
+- この開発で身につけたいこと：
+```
+
+### 4. コミットして push する
+
+```
+git add .
+git commit -m "feat: 自己紹介を追加"
+git push -u origin feature/#Issue番号-add-自分の名前
+```
+
+### 5. Pull Request を出す
+
+GitHub のリポジトリページに出る「Compare & pull request」を押し、テンプレートに沿って書いて作成します。
+本文に `Closes #Issue番号` と書くと、マージ時に Issue が自動で閉じます。
+
+### 6. レビューしてマージする
+
+相手の PR を読み、コメントを書いて「Approve」します。Approve されたら、PR を出した本人がマージします。
+
+### 7. 最新の main を取り込む
+
+```
+git switch main
+git pull
+```
+
+## 次の練習：コンフリクト
+
+2人で同時に、この README の下にある「メンバー一覧」の同じ行を別々に書き換えて PR を出し、コンフリクトを起こして解消してみましょう。
+
+## メンバー一覧
+
+- （ここに名前を追加）
