@@ -180,11 +180,15 @@ git push -u origin feature/#2-add-hayato
 
 修正を頼まれたら、同じブランチのまま③〜⑤をもう一度やります（pushは `git push` だけでOK）。同じPRに自動で追加されるので、PRを作り直す必要はありません。
 
+Approveされた後に新しいコミットをpushすると、その承認は自動で取り消されます。直したら、相方にもう一度レビューを頼みましょう。
+
 ### ⑧ マージする（GitHub）
 
 Approveされたら、**PRを出した本人がマージ**します。「Merge pull request」→「Confirm merge」を押し、その後に出る「Delete branch」も押して、GitHub上の作業ブランチを片付けます。
 
-マージは必ず **Merge pull request**（デフォルト）を使います。**Squash and merge** を選ぶと、⑨の `git branch -d` がエラーになります。
+マージ方法は **Merge pull request** だけが使えるように設定しています。**Squash and merge** でマージすると、⑨の `git branch -d` がエラーになるためです。
+
+例外として、長谷川（maintainersチーム）はApproveがなくてもPRをマージできます。PR画面のマージボタンの近くにある「Merge without waiting for requirements to be met (bypass rules)」にチェックを入れると、「Merge pull request」が押せるようになります。mainへの直接pushは、長谷川もできません。
 
 ### ⑨ 手元をmainに戻す（VS Code）
 
@@ -198,7 +202,7 @@ git branch -d feature/#2-add-hayato
 
 ## レビューする側の手順
 
-レビューはすべてGitHubのWebサイトで行い、変更を読んで問題がなければApproveします。Approveが1件ないとmainにはマージできません。
+レビューはすべてGitHubのWebサイトで行い、変更を読んで問題がなければApproveします。Approveが1件ないとmainにはマージできません（例外は⑧を参照）。
 
 1. Slackの #github の通知、またはGitHubの「Pull requests」タブからPRを開く。
 2. 「Conversation」タブで本文を読み、何のための変更かをつかむ。
@@ -267,7 +271,7 @@ PRの画面に「This branch has conflicts that must be resolved」と出たら�
 | コミットしたら謎の黒い画面が出て止まった | `-m` を付け忘れて編集用の画面（Vim）が開いた | `Esc` を押して `:q!` と打ちEnter。もう一度 `-m "メッセージ"` 付きでコミット |
 | コミットメッセージを間違えた（push前） | ― | `git commit --amend -m "正しいメッセージ"` |
 | `git` が「認識されません」 | Gitが未インストール、またはVS Codeを再起動していない | 準備の1をやり直し、VS Codeを再起動 |
-| PRのマージボタンが押せない | Approveがまだない、またはコンフリクトがある | 相方にレビューを頼む。コンフリクトなら前の章の手順で直す |
+| PRのマージボタンが押せない | Approveがまだない、Approveの後にpushして承認が取り消された、またはコンフリクトがある | 相方にレビューを頼む（取り消された場合はもう一度頼む）。コンフリクトなら前の章の手順で直す |
 | 何が起きたか全く分からない | ― | 変なコマンドを重ねずに手を止め、`git status` の結果をSlackに貼って相談する |
 
 ネットで見つけた `--force` や `reset --hard` は、変更が消えることがあるので、意味が分かるまでは使わないでください。
