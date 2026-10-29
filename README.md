@@ -8,6 +8,9 @@ Kyoto Dev Circle の Phase 0 用リポジトリです。
 - `main` ブランチに直接 push はできません（保護されています）。
 - 作業は必ず Issue から始め、ブランチを作って Pull Request を出します。
 - マージには、もう1人のレビュー（Approve）が必要です。
+- Approve の後に新しいコミットを push すると、承認は取り消されます。直したら、もう一度レビューを頼みます。
+- マージ方法は「Merge pull request」だけが使えます（Squash and merge と Rebase and merge は設定で使えなくしています）。
+- 例外として、長谷川（maintainers チーム）は Pull Request に限り、Approve なしでマージできます。main への直接 push はできません。
 - ブランチ名は `feature/#Issue番号-内容` の形にします（例：`feature/#2-add-hayato`）。
 - コミットメッセージは `feat:`、`fix:`、`docs:` などで始めます。
 
@@ -53,7 +56,7 @@ GitHub のリポジトリページに出る「Compare & pull request」を押し
 
 ### 6. レビューしてマージする
 
-相手の PR を読み、コメントを書いて「Approve」します。Approve されたら、PR を出した本人がマージします。
+相手の PR を読み、コメントを書いて「Approve」します。Approve されたら、PR を出した本人が「Merge pull request」でマージします。
 
 ### 7. 最新の main を取り込む
 
