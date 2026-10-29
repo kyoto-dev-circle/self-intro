@@ -45,7 +45,7 @@ flowchart LR
 | **ブランチ（branch）** | mainから枝分かれした作業用の線。mainを壊さずに試せる | 本番と別の下書き用紙 |
 | main | 正式版のブランチ。このリポジトリでは直接pushできない | 清書 |
 | **push（プッシュ）** | 手元のコミットをGitHubに送る | アップロード |
-| **pull（プル）** | GitHubの最新の変更を手元に取り込む | ダウンロードして上書き |
+| **pull（プル）** | GitHubの最新の変更を手元に取り込む | 最新を取り込んで合体 |
 | **PR（プルリクエスト）** | 「私のブランチをmainに入れてください」という申請。GitHub上で作る | 提出前のチェック依頼 |
 | レビュー / Approve | PRの変更をもう1人が確認し、OKなら承認する | 添削してハンコを押す |
 | マージ（merge） | ブランチの変更をmainに合体させる | 下書きを清書に反映 |
@@ -57,6 +57,8 @@ flowchart LR
 
 準備は4つで、終わればVS Codeでself-introリポジトリを開ける状態になります。コマンドはすべてVS Codeのターミナル（`Ctrl + @`）に打ちます。
 
+※ `Ctrl + @` は日本語配列キーボードの場合です。英語配列なら `` Ctrl + ` `` で開きます。
+
 ### 1. Gitが入っているか確認する
 
 ```bash
@@ -67,27 +69,34 @@ git --version
 
 ### 2. 名前とメールアドレスを登録する
 
-コミットに「誰が変更したか」を残すための設定です。名前はGitHubのユーザー名、メールはGitHubに登録したものにします。
+コミットに「誰が変更したか」を残すための設定です。名前はGitHubのユーザー名、メールはGitHubのnoreplyアドレスにします。
 
 ```bash
 git config --global user.name "GitHubのユーザー名"
-git config --global user.email "GitHubに登録したメールアドレス"
+git config --global user.email "GitHubのnoreplyアドレス"
 git config --global pull.rebase false
+git config --global core.editor "code --wait"   # エディタをVS Codeにする
 ```
 
-3行目は、pullのときに出る警告を消すための設定です。`git config --global --list` で登録内容を確認できます。
+- **メールはnoreplyアドレスを使う**：GitHubの Settings → Emails に表示される `数字+ユーザー名@users.noreply.github.com` の形のアドレスです。「メールアドレスを公開するpushをブロック」が有効だと、gmailなどを設定した場合はpushが拒否されます。
+- **3行目**：pullのときに出る警告を消すための設定です。
+- **4行目（エディタをVS Codeにする）**：初期設定のままだとVimが開き、`git pull` でマージのメッセージ入力になったときに止まってしまいます。VS Codeでタブが開いたら、そのまま閉じれば続きが進みます。
+
+`git config --global --list` で登録内容を確認できます。
 
 ### 3. リポジトリをcloneする
 
-作業用のフォルダ（例：ドキュメントの中の dev）を作り、そこへ移動してからcloneします。
+作業用のフォルダ（例：ホームフォルダの中の dev）を作り、そこへ移動してからcloneします。
 
 ```bash
-mkdir ~/Documents/dev
-cd ~/Documents/dev
+mkdir ~/dev
+cd ~/dev
 git clone https://github.com/kyoto-dev-circle/self-intro.git
 ```
 
 `self-intro` というフォルダができれば成功です。
+
+clone先を `~/Documents` にしないのは、Documents がOneDriveで同期されていると、Gitとぶつかることがあるためです。
 
 ### 4. VS Codeで開き、GitHubにサインインする
 
@@ -110,7 +119,7 @@ git clone https://github.com/kyoto-dev-circle/self-intro.git
 ```bash
 git switch main
 git pull
-git switch -c feature/#2-add-self-intro
+git switch -c feature/#2-add-hayato
 ```
 
 - 1行目：mainブランチに移る
@@ -128,7 +137,7 @@ VS Codeの左下にブランチ名が表示されているので、今どこに�
 ```bash
 git status
 git add .
-git commit -m "docs: 長谷川の自己紹介を追加"
+git commit -m "feat: 自己紹介を追加"
 ```
 
 - `git status`：何が変わったか確認する（迷ったらいつでも打ってよい）
@@ -142,15 +151,17 @@ git commit -m "docs: 長谷川の自己紹介を追加"
 | feat: | 新しい機能やページを追加した |
 | fix: | 不具合を直した |
 | docs: | READMEや文章だけの変更 |
-| style: | 見た目や書式の整理（動きは変わらない） |
+| style: | コードの書式だけの変更（インデント・空白など。動きや見た目は変わらない） |
 | refactor: | 動きを変えずにコードを書き直した |
+
+CSSでデザインを変えたときは、`style:` ではなく `feat:` や `fix:` を使います。
 
 ボタンでやる場合：左端の枝分かれアイコン（ソース管理、`Ctrl + Shift + G`）を開き、ファイル名の横の「＋」→ 上の欄にメッセージを入力 →「コミット」。
 
 ### ⑤ pushする（VS Code）
 
 ```bash
-git push -u origin feature/#2-add-self-intro
+git push -u origin feature/#2-add-hayato
 ```
 
 「このブランチをGitHubに送る」という意味です。`-u` を付けるのは初回だけで、同じブランチで2回目以降は `git push` だけで済みます。ボタンでやる場合は、ソース管理の「ブランチの発行」を押します。
@@ -163,27 +174,35 @@ git push -u origin feature/#2-add-self-intro
 4. 右側の「Reviewers」で相方を選び、「Create pull request」を押す。
 5. Slackの #github に通知が出るので、必要ならスレッドで「レビューお願いします」と一言添える。
 
+慣れたら、VS Codeの拡張機能「GitHub Pull Requests」からもPRを作れます。左端のGitHubアイコンを開き、「Create Pull Request」（＋マーク）を押すと、タイトルや本文をVS Codeの中で書けます。最初のうちは、画面と用語を覚えるためにWebで作るのがおすすめです。
+
 ### ⑦ レビューを待つ・直す
 
 修正を頼まれたら、同じブランチのまま③〜⑤をもう一度やります（pushは `git push` だけでOK）。同じPRに自動で追加されるので、PRを作り直す必要はありません。
 
+Approveされた後に新しいコミットをpushすると、その承認は自動で取り消されます。直したら、相方にもう一度レビューを頼みましょう。
+
 ### ⑧ マージする（GitHub）
 
-Approveされたら「Merge pull request」→「Confirm merge」を押します。その後に出る「Delete branch」も押して、GitHub上の作業ブランチを片付けます。マージするのはPRを出した本人でも、レビューした人でも構いません。どちらが押すかは2人で決めておきましょう。
+Approveされたら、**PRを出した本人がマージ**します。「Merge pull request」→「Confirm merge」を押し、その後に出る「Delete branch」も押して、GitHub上の作業ブランチを片付けます。
+
+マージ方法は **Merge pull request** だけが使えるように設定しています。**Squash and merge** でマージすると、⑨の `git branch -d` がエラーになるためです。
+
+例外として、長谷川（maintainersチーム）はApproveがなくてもPRをマージできます。PR画面のマージボタンの近くにある「Merge without waiting for requirements to be met (bypass rules)」にチェックを入れると、「Merge pull request」が押せるようになります。mainへの直接pushは、長谷川もできません。
 
 ### ⑨ 手元をmainに戻す（VS Code）
 
 ```bash
 git switch main
 git pull
-git branch -d feature/#2-add-self-intro
+git branch -d feature/#2-add-hayato
 ```
 
 マージ後のmainを取り込み、手元の作業ブランチを削除します。これで1サイクル完了です。
 
 ## レビューする側の手順
 
-レビューはすべてGitHubのWebサイトで行い、変更を読んで問題がなければApproveします。Approveが1件ないとmainにはマージできません。
+レビューはすべてGitHubのWebサイトで行い、変更を読んで問題がなければApproveします。Approveが1件ないとmainにはマージできません（例外は⑧を参照）。
 
 1. Slackの #github の通知、またはGitHubの「Pull requests」タブからPRを開く。
 2. 「Conversation」タブで本文を読み、何のための変更かをつかむ。
@@ -199,6 +218,8 @@ git branch -d feature/#2-add-self-intro
 
 自分で出したPRは自分でApproveできない仕組みです。必ず相方に頼みましょう。
 
+慣れたら、同じ拡張機能「GitHub Pull Requests」を使って、VS Codeの中で差分を見ながらコメントやApproveもできます。左端のGitHubアイコンから対象のPRを開きます。
+
 ## コンフリクトが起きたときの直し方
 
 コンフリクトは壊れたわけではなく、「どちらを残すか人間が決めて」という合図です。自分のブランチに最新のmainを取り込んで、手元で直します。
@@ -208,7 +229,7 @@ PRの画面に「This branch has conflicts that must be resolved」と出たら�
 1. 自分の作業ブランチにいることを確認し、最新のmainを取り込む。
 
    ```bash
-   git switch feature/#2-add-self-intro
+   git switch feature/#2-add-hayato
    git pull origin main
    ```
 2. `CONFLICT` と表示されたファイルをVS Codeで開く。次のような印が入っています。
@@ -250,28 +271,28 @@ PRの画面に「This branch has conflicts that must be resolved」と出たら�
 | コミットしたら謎の黒い画面が出て止まった | `-m` を付け忘れて編集用の画面（Vim）が開いた | `Esc` を押して `:q!` と打ちEnter。もう一度 `-m "メッセージ"` 付きでコミット |
 | コミットメッセージを間違えた（push前） | ― | `git commit --amend -m "正しいメッセージ"` |
 | `git` が「認識されません」 | Gitが未インストール、またはVS Codeを再起動していない | 準備の1をやり直し、VS Codeを再起動 |
-| PRのマージボタンが押せない | Approveがまだない、またはコンフリクトがある | 相方にレビューを頼む。コンフリクトなら前の章の手順で直す |
+| PRのマージボタンが押せない | Approveがまだない、Approveの後にpushして承認が取り消された、またはコンフリクトがある | 相方にレビューを頼む（取り消された場合はもう一度頼む）。コンフリクトなら前の章の手順で直す |
 | 何が起きたか全く分からない | ― | 変なコマンドを重ねずに手を止め、`git status` の結果をSlackに貼って相談する |
 
 ネットで見つけた `--force` や `reset --hard` は、変更が消えることがあるので、意味が分かるまでは使わないでください。
 
 ## コマンド早見表
 
-普段使うのはこの表のコマンドだけです。
+普段使うのはこの表のコマンドだけです。例は #2 の場合なので、番号と内容は自分のIssueに合わせて変えてください。
 
 | やりたいこと | コマンド |
 | --- | --- |
 | 今の状態を確認する | `git status` |
 | mainに移る | `git switch main` |
 | GitHubの最新を取り込む | `git pull` |
-| ブランチを作って移る | `git switch -c feature/#番号-内容` |
+| ブランチを作って移る | `git switch -c feature/#2-add-hayato` |
 | ブランチの一覧を見る（\* が今いる場所） | `git branch` |
 | 変更をコミット対象にする | `git add .` |
-| コミットする | `git commit -m "feat: 〜を追加"` |
-| 初めてpushする | `git push -u origin ブランチ名` |
+| コミットする | `git commit -m "feat: 自己紹介を追加"` |
+| 初めてpushする | `git push -u origin feature/#2-add-hayato` |
 | 2回目以降のpush | `git push` |
 | 変更の中身を見る（コミット前） | `git diff` |
 | 履歴を見る | `git log --oneline` |
-| 使い終わったブランチを消す | `git branch -d ブランチ名` |
+| 使い終わったブランチを消す | `git branch -d feature/#2-add-hayato` |
 
 `git log` や `git diff` の表示が長くて止まったように見えたら、`q` を押すと戻れます。
