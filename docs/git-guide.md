@@ -111,20 +111,23 @@ clone先を `~/Documents` にしないのは、Documents がOneDriveで同期さ
 
 タスクボードは、誰が何をどこまで進めているかを一目で見るためのボードです。self-intro のページ上部の「Projects」タブ →「Kyoto Dev Circle タスクボード」で開きます。
 
-Issueが1枚のカードになり、次の5つの列に並びます。作業が進んだら、カードを右の列へドラッグして動かします。
+Issueが1枚のカードになり、次の5つの列に並びます。
 
-| 列 | 意味 | カードを動かすとき |
-| --- | --- | --- |
-| Backlog | まだ手を付けていない | Issueを作ったとき |
-| Ready | 次にやる | 次に取りかかると決めたとき |
-| In progress | 作業中 | 作業を始めるとき（①） |
-| In review | レビュー待ち | PRを出したとき（⑥） |
-| Done | 完了 | マージするとIssueが自動で閉じ、Doneに移る（⑧） |
+| 列 | 意味 | カードが入るとき | 動かす人 |
+| --- | --- | --- | --- |
+| Backlog | やることの候補。中身や担当がまだ決まっていなくてよい | Issueを作ったとき | 自動 |
+| Ready | すぐ取りかかれる。やることと担当者が決まっている | 定例で「今のスプリントでやる」と決めたとき | 定例で2人で |
+| In progress | 作業中 | 担当者がブランチを作って作業を始めるとき（①） | 担当者が手で |
+| In review | PRのレビュー中。Request changes で直している間もここのまま | PR本文の `Closes #番号` でIssueとつながったとき（⑥） | 自動 |
+| Done | 完了 | PRがマージされたとき、またはIssueを閉じたとき（⑧） | 自動 |
 
-カードは、Issueの画面の右側にある「Projects」の Status からも動かせます。
+手で動かすのは **Ready と In progress の2つだけ**です。カードは、ドラッグするか、Issueの画面の右側にある「Projects」の Status で動かします。
 
 - **ボードに置くのはIssueのカードだけ**です。PRには「Projects」を設定しません。1つの作業のカードが2枚になると、どちらを動かせばよいか迷うためです。PRは本文の `Closes #番号` でIssueとつながっているので、Issueのカードを見れば進み具合が分かります。
-- Issueを作るときは、右側の「Assignees」で担当者を、「Projects」で「Kyoto Dev Circle タスクボード」を選びます。Projectsを選ばないと、Issueがボードに出てきません。
+- Issueを作るときは、右側の「Assignees」で担当者を選びます。self-intro でIssueを作ると自動でボードの Backlog に入るので、「Projects」は選ばなくてかまいません。
+- **カードを手で Done に動かさない**でください。Done に動かすとIssueが自動で閉じるため、PRがマージされる前に完了扱いになってしまいます。
+- PRのないIssue（例：Slackに参加する）は、In progress に動かして作業し、終わったらIssueに一言コメントを残して「Close issue」を押します。カードは自動で Done に移ります。
+- In progress は3枚、In review は5枚までの上限があります（超えると列の数字が赤くなる）。1人が同時に抱える作業は1〜2件までにしましょう。
 - タスクボードはリポジトリではなく、Organization（kyoto-dev-circle）に属しています。[Organizationの Projects 一覧](https://github.com/orgs/kyoto-dev-circle/projects) からも開けます。
 
 ## 毎回の作業の流れ
@@ -135,7 +138,7 @@ Issueが1枚のカードになり、次の5つの列に並びます。作業が�
 
 ### ① Issueを確認する（GitHub）
 
-タスクボードで自分のIssueを「In progress」に動かします（「タスクボードの使い方」を参照）。Issue番号（例：#2）を覚えておきます。
+タスクボードで、自分が担当するIssueのカードを「In progress」に動かします。ここは自動では動かないので、必ず手で動かします（「タスクボードの使い方」を参照）。Issue番号（例：#2）を覚えておきます。
 
 ### ② mainを最新にして、ブランチを作る（VS Code）
 
@@ -193,16 +196,16 @@ git push -u origin feature/#2-add-hayato
 
 1. ブラウザで [self-introリポジトリ](https://github.com/kyoto-dev-circle/self-intro) を開く。
 2. 黄色い帯の「Compare & pull request」を押す。出ていなければ「Pull requests」タブ →「New pull request」で、compareに自分のブランチを選ぶ。
-3. タイトルを書き、本文のテンプレートを埋める。`Closes #2` を必ず入れる（マージ時にIssueが自動で閉じる）。
+3. タイトルを書き、本文のテンプレートを埋める。`Closes #2` を必ず入れる（タスクボードのカードが自動で In review に移り、マージ時にはIssueが自動で閉じる）。
 4. 右側の「Reviewers」で相方を選び、「Create pull request」を押す。「Projects」は設定しない。
-5. タスクボードで自分のIssueを「In review」に動かす。
+5. タスクボードで、自分のIssueのカードが「In review」に移ったか確認する。移っていなければ `Closes #番号` の書き忘れなので、PR本文の右上の「…」→「Edit」で直す。
 6. Slackの #github に通知が出るので、そのスレッドで相方にメンションを付けて「レビューお願いします」と一言送る。
 
 慣れたら、VS Codeの拡張機能「GitHub Pull Requests」からもPRを作れます（「VS Codeのボタンと拡張機能で進める」を参照）。最初のうちは、画面と用語を覚えるためにWebで作るのがおすすめです。
 
 ### ⑦ レビューを待つ・直す
 
-修正を頼まれたら、同じブランチのまま③〜⑤をもう一度やります（pushは `git push` だけでOK）。同じPRに自動で追加されるので、PRを作り直す必要はありません。
+修正を頼まれたら、同じブランチのまま③〜⑤をもう一度やります（pushは `git push` だけでOK）。同じPRに自動で追加されるので、PRを作り直す必要はありません。直している間も、カードは In review のままにします。
 
 Approveされた後に新しいコミットをpushすると、その承認は自動で取り消されます。直したら、相方にもう一度レビューを頼みましょう。
 
@@ -328,7 +331,9 @@ PRの画面に「This branch has conflicts that must be resolved」と出たら�
 | コミットメッセージを間違えた（push前） | ― | `git commit --amend -m "正しいメッセージ"` |
 | `git` が「認識されません」 | Gitが未インストール、またはVS Codeを再起動していない | 準備の1をやり直し、VS Codeを再起動 |
 | PRのマージボタンが押せない | Approveがまだない、Approveの後にpushして承認が取り消された、またはコンフリクトがある | 相方にレビューを頼む（取り消された場合はもう一度頼む）。コンフリクトなら前の章の手順で直す |
-| Issueがタスクボードに出てこない | Issueに「Projects」を設定していない | Issueの画面の右側の「Projects」で「Kyoto Dev Circle タスクボード」を選ぶ |
+| Issueがタスクボードに出てこない | 自動追加が働かなかった（self-intro 以外で作った、閉じた状態で作った など） | Issueの画面の右側の「Projects」で「Kyoto Dev Circle タスクボード」を選ぶ |
+| PRを出したのにカードが In review に移らない | PR本文に `Closes #番号` がない、または番号が違う | PR本文の右上の「…」→「Edit」で `Closes #番号` を直す |
+| マージしていないのにIssueが閉じた | カードを手で Done に動かした（Doneに動かすとIssueが自動で閉じる） | Issueの画面で「Reopen issue」を押し、カードを元の列に戻す |
 | PRのカードがタスクボードに出てきた | PRに「Projects」を設定した | カードの「…」→「Delete from project」で外す（ボードから外れるだけで、PRは消えない） |
 | 何が起きたか全く分からない | ― | 変なコマンドを重ねずに手を止め、`git status` の結果をSlackに貼って相談する |
 
