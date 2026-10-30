@@ -27,7 +27,7 @@ flowchart LR
 
 1. まず「用語集」で言葉の意味をざっくりつかむ（全部覚えなくてよい）。
 2. 「最初に1回だけやる準備」を2人とも済ませる。
-3. 普段は「毎回の作業の流れ」を見ながら手を動かす。
+3. 普段は「タスクボードの使い方」と「毎回の作業の流れ」を見ながら手を動かす。慣れたら「VS Codeのボタンと拡張機能で進める」も使う。
 4. 困ったら「よくあるトラブル」と「コマンド早見表」を見る。
 
 使う道具はVS Code（編集、コミット、push）とGitHubのWebサイト（PR、レビュー、マージ）の2つです。コマンドはVS Codeのターミナル（`Ctrl + @` で開く）に打ちます。
@@ -50,6 +50,7 @@ flowchart LR
 | レビュー / Approve | PRの変更をもう1人が確認し、OKなら承認する | 添削してハンコを押す |
 | マージ（merge） | ブランチの変更をmainに合体させる | 下書きを清書に反映 |
 | Issue（イシュー） | やることや不具合を書くチケット。番号（#2 など）が付く | ToDoカード |
+| タスクボード | Issueをカードにして、進み具合ごとの列に並べたボード。self-intro の「Projects」タブから開く | 付箋を貼ったホワイトボード |
 | コンフリクト（衝突） | 2人が同じ行を別々に変えたとき、Gitが自動で合体できない状態 | 同じ欄に2人が違うことを書いた |
 | origin | リモート（GitHub側）のリポジトリの呼び名 | 「GitHub」と読み替えてOK |
 
@@ -106,13 +107,33 @@ clone先を `~/Documents` にしないのは、Documents がOneDriveで同期さ
 
 ここまでできたら、ターミナルで `git status` と打ってみましょう。`On branch main` と出れば準備完了です。
 
+## タスクボードの使い方
+
+タスクボードは、誰が何をどこまで進めているかを一目で見るためのボードです。self-intro のページ上部の「Projects」タブ →「Kyoto Dev Circle タスクボード」で開きます。
+
+Issueが1枚のカードになり、次の5つの列に並びます。作業が進んだら、カードを右の列へドラッグして動かします。
+
+| 列 | 意味 | カードを動かすとき |
+| --- | --- | --- |
+| Backlog | まだ手を付けていない | Issueを作ったとき |
+| Ready | 次にやる | 次に取りかかると決めたとき |
+| In progress | 作業中 | 作業を始めるとき（①） |
+| In review | レビュー待ち | PRを出したとき（⑥） |
+| Done | 完了 | マージするとIssueが自動で閉じ、Doneに移る（⑧） |
+
+カードは、Issueの画面の右側にある「Projects」の Status からも動かせます。
+
+- **ボードに置くのはIssueのカードだけ**です。PRには「Projects」を設定しません。1つの作業のカードが2枚になると、どちらを動かせばよいか迷うためです。PRは本文の `Closes #番号` でIssueとつながっているので、Issueのカードを見れば進み具合が分かります。
+- Issueを作るときは、右側の「Assignees」で担当者を、「Projects」で「Kyoto Dev Circle タスクボード」を選びます。Projectsを選ばないと、Issueがボードに出てきません。
+- タスクボードはリポジトリではなく、Organization（kyoto-dev-circle）に属しています。[Organizationの Projects 一覧](https://github.com/orgs/kyoto-dev-circle/projects) からも開けます。
+
 ## 毎回の作業の流れ
 
 1つの作業は「Issueを確認→ブランチ→編集→コミット→push→PR→レビュー→マージ→pull」の9ステップです。下の例は #2（自分の自己紹介ファイルを追加する）の場合です。番号や内容は自分のIssueに合わせて変えてください。
 
 ### ① Issueを確認する（GitHub）
 
-タスクボードで自分のIssueを「In progress」に動かします。Issue番号（例：#2）を覚えておきます。
+タスクボードで自分のIssueを「In progress」に動かします（「タスクボードの使い方」を参照）。Issue番号（例：#2）を覚えておきます。
 
 ### ② mainを最新にして、ブランチを作る（VS Code）
 
@@ -156,7 +177,7 @@ git commit -m "feat: 自己紹介を追加"
 
 CSSでデザインを変えたときは、`style:` ではなく `feat:` や `fix:` を使います。
 
-ボタンでやる場合：左端の枝分かれアイコン（ソース管理、`Ctrl + Shift + G`）を開き、ファイル名の横の「＋」→ 上の欄にメッセージを入力 →「コミット」。
+ボタンでやる場合：左端の枝分かれアイコン（ソース管理、`Ctrl + Shift + G`）を開き、ファイル名の横の「＋」→ 上の欄にメッセージを入力 →「✓ コミット」。
 
 ### ⑤ pushする（VS Code）
 
@@ -164,17 +185,18 @@ CSSでデザインを変えたときは、`style:` ではなく `feat:` や `fix
 git push -u origin feature/#2-add-hayato
 ```
 
-「このブランチをGitHubに送る」という意味です。`-u` を付けるのは初回だけで、同じブランチで2回目以降は `git push` だけで済みます。ボタンでやる場合は、ソース管理の「ブランチの発行」を押します。
+「このブランチをGitHubに送る」という意味です。`-u` を付けるのは初回だけで、同じブランチで2回目以降は `git push` だけで済みます。ボタンでやる場合は、ソース管理の「Branch の発行」を押します。
 
 ### ⑥ PRを作る（GitHub）
 
 1. ブラウザで [self-introリポジトリ](https://github.com/kyoto-dev-circle/self-intro) を開く。
 2. 黄色い帯の「Compare & pull request」を押す。出ていなければ「Pull requests」タブ →「New pull request」で、compareに自分のブランチを選ぶ。
 3. タイトルを書き、本文のテンプレートを埋める。`Closes #2` を必ず入れる（マージ時にIssueが自動で閉じる）。
-4. 右側の「Reviewers」で相方を選び、「Create pull request」を押す。
-5. Slackの #github に通知が出るので、必要ならスレッドで「レビューお願いします」と一言添える。
+4. 右側の「Reviewers」で相方を選び、「Create pull request」を押す。「Projects」は設定しない。
+5. タスクボードで自分のIssueを「In review」に動かす。
+6. Slackの #github に通知が出るので、そのスレッドで相方にメンションを付けて「レビューお願いします」と一言送る。
 
-慣れたら、VS Codeの拡張機能「GitHub Pull Requests」からもPRを作れます。左端のGitHubアイコンを開き、「Create Pull Request」（＋マーク）を押すと、タイトルや本文をVS Codeの中で書けます。最初のうちは、画面と用語を覚えるためにWebで作るのがおすすめです。
+慣れたら、VS Codeの拡張機能「GitHub Pull Requests」からもPRを作れます（「VS Codeのボタンと拡張機能で進める」を参照）。最初のうちは、画面と用語を覚えるためにWebで作るのがおすすめです。
 
 ### ⑦ レビューを待つ・直す
 
@@ -184,7 +206,7 @@ Approveされた後に新しいコミットをpushすると、その承認は自
 
 ### ⑧ マージする（GitHub）
 
-Approveされたら、**PRを出した本人がマージ**します。「Merge pull request」→「Confirm merge」を押し、その後に出る「Delete branch」も押して、GitHub上の作業ブランチを片付けます。
+Approveされたら、**PRを出した本人がマージ**します。「Merge pull request」→「Confirm merge」を押し、その後に出る「Delete branch」も押して、GitHub上の作業ブランチを片付けます。マージすると、`Closes #番号` を書いたIssueが自動で閉じ、タスクボードのカードもDoneに移ります。
 
 マージ方法は **Merge pull request** だけが使えるように設定しています。**Squash and merge** でマージすると、⑨の `git branch -d` がエラーになるためです。
 
@@ -199,6 +221,38 @@ git branch -d feature/#2-add-hayato
 ```
 
 マージ後のmainを取り込み、手元の作業ブランチを削除します。これで1サイクル完了です。
+
+## VS Codeのボタンと拡張機能で進める
+
+コマンドでの流れに慣れたら、同じ作業をVS Codeのボタンと拡張機能「GitHub Pull Requests」でもできます。ボタンの裏では同じGitのコマンドが動いているので、途中からコマンドと混ぜても問題ありません。状態が分からなくなったら、ターミナルで `git status` を打てば確かめられます。
+
+| 手順 | ボタンでの操作 | 同じ意味のコマンド |
+| --- | --- | --- |
+| ② mainに移る | 左下のブランチ名をクリック →「main」を選ぶ | `git switch main` |
+| ② mainを最新にする | ソース管理（`Ctrl + Shift + G`）の「…」→「プル」 | `git pull` |
+| ② ブランチを作る | 左下のブランチ名をクリック →「新しいブランチの作成...」→ 名前を入力 | `git switch -c feature/#2-add-hayato` |
+| ④ コミット対象にする | ソース管理で、ファイル名の横の「＋」 | `git add` |
+| ④ コミットする | 上の欄にメッセージを入力 →「✓ コミット」 | `git commit -m "..."` |
+| ⑤ pushする（初回） | 「Branch の発行」 | `git push -u origin feature/#2-add-hayato` |
+| ⑤ pushする（2回目以降） | 「変更の同期」（pullとpushを両方行う） | `git pull` → `git push` |
+| ⑨ ブランチを消す | ソース管理の「…」→「ブランチ」→「ブランチの削除...」 | `git branch -d feature/#2-add-hayato` |
+
+### PRを作る（拡張機能 GitHub Pull Requests）
+
+1. 左端のGitHubのアイコンを押す。初回はGitHubへのサインインを求められるので許可する。
+2. 上部の「Create Pull Request」を押す。push直後に右下に出る通知から開いてもよい。
+3. base が `main`、merge が自分のブランチになっているか確認する。
+4. タイトルと本文を書く。本文に `Closes #2` を必ず入れる。
+5. Reviewers で相方を選び、「Create」を押す。「Projects」は設定しない。
+
+作ったPRはVS Codeの中で開き、レビューの状況を確認できます。マージもこの画面からできます。
+
+### 気をつけること
+
+- ソース管理でファイル名の横に出る「↶」は、変更を破棄するボタンです。新しく作ったファイルの場合は、ファイルそのものが消えます。
+- 新しいファイルは、エクスプローラーで何も選んでいない状態で「新しいファイル」を押すと、いちばん上（self-intro の直下）に作られます。フォルダーを選んだまま押すと、そのフォルダーの中に作られます。`members/自分のユーザー名.md` のように `/` で区切って入力すると、フォルダーも一緒に作れます。
+- 「VS Codeに定期的に git fetch を実行させますか？」と聞かれたら「はい」でかまいません。GitHubの最新を確認するだけで、手元のファイルは変わりません。pullの代わりにはならないので、②のプルは毎回自分で行います。
+- 設定（`Ctrl + ,`）で「Git: Prune On Fetch」にチェックを入れると、GitHubで消したブランチの記録（`origin/feature/...`）が自動で片付きます。
 
 ## レビューする側の手順
 
@@ -272,6 +326,8 @@ PRの画面に「This branch has conflicts that must be resolved」と出たら�
 | コミットメッセージを間違えた（push前） | ― | `git commit --amend -m "正しいメッセージ"` |
 | `git` が「認識されません」 | Gitが未インストール、またはVS Codeを再起動していない | 準備の1をやり直し、VS Codeを再起動 |
 | PRのマージボタンが押せない | Approveがまだない、Approveの後にpushして承認が取り消された、またはコンフリクトがある | 相方にレビューを頼む（取り消された場合はもう一度頼む）。コンフリクトなら前の章の手順で直す |
+| Issueがタスクボードに出てこない | Issueに「Projects」を設定していない | Issueの画面の右側の「Projects」で「Kyoto Dev Circle タスクボード」を選ぶ |
+| PRのカードがタスクボードに出てきた | PRに「Projects」を設定した | カードの「…」→「Delete from project」で外す（ボードから外れるだけで、PRは消えない） |
 | 何が起きたか全く分からない | ― | 変なコマンドを重ねずに手を止め、`git status` の結果をSlackに貼って相談する |
 
 ネットで見つけた `--force` や `reset --hard` は、変更が消えることがあるので、意味が分かるまでは使わないでください。
