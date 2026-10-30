@@ -3,10 +3,13 @@
 Kyoto Dev Circle の Phase 0 用リポジトリです。
 自己紹介ファイルを Pull Request で追加しながら、Git/GitHub を使った共同開発の基本を練習します。
 
+はじめての人は、まず [docs/git-guide.md](docs/git-guide.md)（Git/GitHub はじめてガイド）を読んでください。
+
 ## ルール
 
 - `main` ブランチに直接 push はできません（保護されています）。
 - 作業は必ず Issue から始め、ブランチを作って Pull Request を出します。
+- 作業の進み具合は、タスクボード（上部の「Projects」タブ →「Kyoto Dev Circle タスクボード」）で管理します。ボードに置くのは Issue のカードだけで、Pull Request には Projects を設定しません。
 - マージには、もう1人のレビュー（Approve）が必要です。
 - Approve の後に新しいコミットを push すると、承認は取り消されます。直したら、もう一度レビューを頼みます。
 - マージ方法は「Merge pull request」だけが使えます（Squash and merge と Rebase and merge は設定で使えなくしています）。
