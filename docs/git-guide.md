@@ -1,6 +1,6 @@
 # Git/GitHub はじめてガイド（Kyoto Dev Circle）
 
-最終更新：2026-10-29
+最終更新：2026-10-30
 
 ## はじめに：GitとGitHubの違い
 
@@ -188,7 +188,7 @@ Approveされたら、**PRを出した本人がマージ**します。「Merge p
 
 マージ方法は **Merge pull request** だけが使えるように設定しています。**Squash and merge** でマージすると、⑨の `git branch -d` がエラーになるためです。
 
-例外として、長谷川（maintainersチーム）はApproveがなくてもPRをマージできます。PR画面のマージボタンの近くにある「Merge without waiting for requirements to be met (bypass rules)」にチェックを入れると、「Merge pull request」が押せるようになります。mainへの直接pushは、長谷川もできません。
+例外として、長谷川（maintainersチーム）はApproveがなくてもPRをマージできます（バイパス）。PR画面のマージボタンの近くにある「Merge without waiting for requirements to be met (bypass rules)」にチェックを入れると、「Merge pull request」が押せるようになります。バイパスは、代表の長谷川が自分の判断で使ってよいことにしています。mainへの直接pushは、長谷川もできません。
 
 ### ⑨ 手元をmainに戻す（VS Code）
 
