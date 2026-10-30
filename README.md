@@ -11,6 +11,7 @@ Kyoto Dev Circle の Phase 0 用リポジトリです。
 - 作業は必ず Issue から始め、ブランチを作って Pull Request を出します。
 - 例外として、Claude が行う README と docs/ の更新は、Issue を作らず Pull Request だけで行います。ブランチ名は `docs/内容`（例：`docs/update-task-board`）にし、変更の理由は Pull Request の本文に書きます。マージは長谷川のバイパスで行います。
 - 作業の進み具合は、タスクボード（上部の「Projects」タブ →「Kyoto Dev Circle タスクボード」）で管理します。ボードに置くのは Issue のカードだけで、Pull Request には Projects を設定しません。
+- タスクボードのカードは、Issue を作ると Backlog に、Pull Request の本文の `Closes #番号` で Issue とつながると In review に、マージすると Done に自動で移ります。手で動かすのは Ready と In progress だけです。列ごとの役割は [docs/git-guide.md](docs/git-guide.md) の「タスクボードの使い方」を見てください。
 - マージには、もう1人のレビュー（Approve）が必要です。
 - Approve の後に新しいコミットを push すると、承認は取り消されます。直したら、もう一度レビューを頼みます。
 - マージ方法は「Merge pull request」だけが使えます（Squash and merge と Rebase and merge は設定で使えなくしています）。
