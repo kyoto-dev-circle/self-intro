@@ -9,6 +9,7 @@ Kyoto Dev Circle の Phase 0 用リポジトリです。
 
 - `main` ブランチに直接 push はできません（保護されています）。
 - 作業は必ず Issue から始め、ブランチを作って Pull Request を出します。
+- 例外として、Claude が行う README と docs/ の更新は、Issue を作らず Pull Request だけで行います。ブランチ名は `docs/内容`（例：`docs/update-task-board`）にし、変更の理由は Pull Request の本文に書きます。マージは長谷川のバイパスで行います。
 - 作業の進み具合は、タスクボード（上部の「Projects」タブ →「Kyoto Dev Circle タスクボード」）で管理します。ボードに置くのは Issue のカードだけで、Pull Request には Projects を設定しません。
 - マージには、もう1人のレビュー（Approve）が必要です。
 - Approve の後に新しいコミットを push すると、承認は取り消されます。直したら、もう一度レビューを頼みます。
